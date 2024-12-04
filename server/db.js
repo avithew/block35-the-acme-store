@@ -30,7 +30,7 @@ const createTables = async () => {
 
 const createProduct = async (name) => {
   const SQL = `
-    INSERT INTO products(name) VALUES ($1);
+    INSERT INTO products(name) VALUES ($1) RETURNING *;
   `;
   const response = await client.query(SQL, [name]);
   return response.rows[0];
@@ -38,7 +38,7 @@ const createProduct = async (name) => {
 
 const createUser = async (username, password) => {
   const SQL = `
-    INSERT INTO users(username, password) VALUES ($1,$2);
+    INSERT INTO users(username, password) VALUES ($1,$2) RETURNING *;
   `;
   const passcrypt = bcrypt.hash(password, 10);
   const response = await client.query(SQL, [username, passcrypt]);
@@ -63,7 +63,7 @@ const fetchProducts = async () => {
 
 const createFavorite = async (product_id, user_id) => {
   const SQL = `
-    INSERT INTO favorites(product_id, user_id) VALUES ($1, $2);
+    INSERT INTO favorites(product_id, user_id) VALUES ($1, $2) RETURNING *;
   `;
   const response = await client.query(SQL, [product_id, user_id]);
   return response.rows[0];
